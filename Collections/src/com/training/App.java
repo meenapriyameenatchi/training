@@ -1,4 +1,4 @@
-package com.training;
+ package com.training;
 import java.util.*;
 
 import com.training.ifaces.CurdRespository;
