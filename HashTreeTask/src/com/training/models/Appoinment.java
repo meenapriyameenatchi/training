@@ -8,12 +8,13 @@ import com.training.services.Doctor;
 
 public class Appoinment {
 
-	 private Map<Doctor,Set<Patient>> list=new HashMap<>();
+	 private Map<Doctor,Set<Patient>> list;
 	 
 
 	public Appoinment() {
 		super();
-		// TODO Auto-generated constructor stub
+		//must or don't add this super constructor
+		list=new HashMap<>();
 	}
 
 	public Appoinment(Map<Doctor, Set<Patient>> list) {

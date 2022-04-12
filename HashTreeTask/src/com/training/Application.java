@@ -12,6 +12,7 @@ import com.training.services.Doctor;
 public class Application {
 
 	public static void main(String[] args) {
+		
 		Patient ram=new Patient(100,"Ram","Chennai",907865);
 		Patient sam=new Patient(101,"Sam","Madurai",9088);
 		
