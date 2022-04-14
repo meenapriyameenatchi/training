@@ -53,8 +53,18 @@ public class BankAccount {
 	public void setBalance(double balance) {
 		this.balance = balance;
 	}
-	public int getAccountNumber() {
+	public int  getAccountNumber() {
 		return accountNumber;
+	}
+
+
+
+
+
+
+	public double  getUpdatedBalance(double i) {
+		this.balance=this.balance+i;
+		return balance ;
 	}
 	
 	

@@ -11,8 +11,9 @@ public class Application {
 		
 		 for(Book eachBook:args) {
 	 System.out.println(eachBook);
-	 }
-		
+	 } 
+		 // done same what happend in above for loop
+		//books.forEach(System.out::println);
 }
 
 	public static void main(String[] args) {
@@ -25,16 +26,24 @@ public class Application {
 		 Book python=new Book(105,"python","sathya",850);
 		 
 		 
+		 
+		 
 		 CurdRespository service=new BookService();
-		  System.out.println("Is Added:=" +service.add(java));
+		 
+		 System.out.println("graeter than 400");
+	List<Book> bookList=((BookService)service).getBookGrtThan(400);
+	bookList.forEach(System.out::println);
+		 
+		 
+		 System.out.println("Is Added:=" +service.add(java));
 		 System.out.println( service.add(spring));;
 		  System.out.println(service.add(maven));
 		  System.out.println(service.add(html));;
 		 System.out.println( service.add(python));
 		System.out.println("===="); 
 		
-		 List<Book> bookList=service.findAll();
-		 for(Book eachBook:bookList) {
+		 List<Book> bookList1=service.findAll();
+		 for(Book eachBook:bookList1) {
 			 System.out.println(eachBook);
 		 }
 		 System.out.println("=======");
