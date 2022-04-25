@@ -1,0 +1,309 @@
+
+
+                             JOIN
+
+
+1..CREATE TABLE meenaS_products(product_id number(5) primary key,product_name varchar2(20) ,price number(10,2))
+
+INSERT INTO  meenaS_products VALUES(10,'TV',450)
+INSERT INTO  meenaS_products VALUES(12,'fridge',1450)
+INSERT INTO  meenaS_products VALUES(111,'tv',2450)
+INSERT INTO  meenaS_products VALUES(113,'laptop',3450)
+
+11	fridge	1450
+10	TV	450
+12	fridge	1450
+111	tv	2450
+113	laptop	3450
+
+
+2..CREATE TABLE MEENUS_INVOICE(invoice_number number(5) primary key,customer_name varchar2(20),quantity number(3),
+product_ref REFERENCES meenaS_products(product_id))
+
+INSERT INTO  MEENUS_INVOICE VALUES(202,'ramesh',2,111)
+INSERT INTO  MEENUS_INVOICE VALUES(203,'suresh',2,113)
+DELETE FROM  MEENUS_INVOICE WHERE invoice_number=204
+INSERT INTO  MEENUS_INVOICE VALUES(205,'JAY',2,11)
+
+SELECT * FROM MEENUS_INVOICE
+
+202	ramesh	2	111
+203	suresh	2	113
+205	JAY	2	11
+
+                             JOIN WITH ALIAS AND WITHOUT ALIAS
+
+3...SELECT mp.product_id ,mp.product_name ,mp.price,
+mi.invoice_number,mi.customer_name,mi.quantity,mi.product_ref,mi.quantity*mp.price 
+FROM meenaS_products mp,MEENUS_INVOICE mi where mp.product_id =mi.product_ref
+
+111	tv	2450	202	ramesh	2	111	4900
+113	laptop	3450	203	suresh	2	113	6900
+11	fridge	1450	205	JAY	2	11	2900
+
+4...SELECT mp.product_id ,mp.product_name ,mp.price,
+mi.invoice_number,mi.customer_name,mi.quantity,mi.product_ref,mi.quantity*mp.price  AMOUNT 
+FROM meenaS_products mp,MEENUS_INVOICE mi where mp.product_id =mi.product_ref
+
+
+                                     LEFT OUTER JOIN
+
+
+
+5...SELECT * FROM meenaS_products mp LEFT OUTER JOIN MEENUS_INVOICE mi
+ ON mp.product_id=mi.product_ref
+
+111	tv	2450	202	ramesh	2	111
+113	laptop	3450	203	suresh	2	113
+11	fridge	1450	205	JAY	2	11
+12	fridge	1450				
+10	TV	450			
+
+	               RIGHT OUTER JOIN WITH NON CORRECT AND PROPER ONE 
+
+
+
+6...SELECT * FROM meenaS_products mp RIGHT OUTER JOIN MEENUS_INVOICE mi
+ ON mp.product_id=mi.product_ref
+
+111	tv	2450	202	ramesh	2	111
+113	laptop	3450	203	suresh	2	113
+11	fridge	1450	205	JAY	2	11
+
+
+7.. SELECT * FROM  MEENUS_INVOICE mi  RIGHT OUTER JOIN meenaS_products mp
+ ON mi.product_ref = mp.product_id
+
+202	ramesh	2	111	111	tv	2450
+203	suresh	2	113	113	laptop	3450
+205	JAY	2	11	11	fridge	1450
+				12	fridge	1450
+				10	TV	450
+
+
+                                    VIEW
+
+
+8... CREATE VIEW meenus_product_view AS SELECT product_id,product_name FROM meenaS_products
+ 
+ SELECT * FROM meenus_product_view
+
+11	fridge
+10	TV
+12	fridge
+111	tv
+113	laptop
+
+                          INSERT INTO VIEW
+
+
+9... INSERT INTO meenus_product_view VALUES(106,'microwave')
+
+11	fridge
+10	TV
+12	fridge
+111	tv
+113	laptop
+106	microwave
+ 
+
+10... INSERT INTO meenus_product_view VALUES(107,'mOBILE')
+
+
+11	fridge
+10	TV
+12	fridge
+111	tv
+113	laptop
+106	microwave
+107	mOBILE
+
+
+11...SELECT * FROM USER_VIEWS
+
+.
+.
+.
+.
+.
+MEENUS_PRODUCT_VIEW             51            SELECT product_id,product_name FROM meenaS_products
+.
+.
+.
+.
+
+
+12...select view_name,text from user_views where view_name='MEENUS_PRODUCT_VIEW'
+           ##MEENUS_PRODUCT_VIEW	SELECT product_id,product_name FROM meenaS_products
+
+
+
+select view_name from user_views where view_name='MEENUS_PRODUCT_VIEW'
+                   MEENUS_PRODUCT_VIEW
+
+
+
+
+select * from user_views where view_name='MEENUS_PRODUCT_VIEW'
+MEENUS_PRODUCT_VIEW	51	SELECT product_id,product_name FROM meenaS_product  null null						
+
+
+
+
+
+
+13...CREATE INDEX  product_meenus_index on meenaS_products(product_name)
+
+Index PRODUCT_MEENUS_INDEX created.
+
+
+                                    NON EQUOI JOIN
+
+14..        
+ CREATE TABLE meenus_catalog(grade varchar(1) primary key ,max_price number(10,2),min_price num
+ 
+ INSERT  INTO meenus_catalog VALUES('A',5000,15000)
+ INSERT INTO meenus_catalog  VALUES('B',500,1500)
+ 
+ INSERT INTO meenus_catalog  VALUES('C',580,1800)
+ update meenus_catalog SET min_price=2400 ,max_price=1900 WHERE  grade='C'
+ 
+ SELECT * FROM meenus_catalog 
+A	5000	15000
+B	500	1500
+C	1900	2400
+ 
+ SELECT * FROM  meenaS_products
+11	fridge	1450
+10	TV	450
+12	fridge	1450
+111	tv	2450
+113	laptop	3450
+106	microwave	
+107	mOBILE	
+ 
+ 
+FINAL -------> SELECT p.product_name, p.price, c.grade FROM meenaS_products p,  
+meenus_catalog c WHERE p.price BETWEEN c.max_price AND c.min_price
+ 
+
+fridge	1450	B
+fridge	1450	B
+
+
+                                    SEQUENCE
+
+ 
+
+15..
+ CREATE TABLE MEENUS_BILL(bill_number number(5) primary key,bill_date date,amount number(10,2),cust_ref number(3))
+ 
+ CREATE SEQUENCE meenus_seq START WITH 101
+ INCREMENT BY 1
+ MAXVALUE 1000
+ 
+ 
+ INSERT INTO  MEENUS_BILL VALUES(meenus_seq.nexTVal,SYSDATE,14500,102)
+ INSERT INTO  MEENUS_BILL VALUES(meenus_seq.nexTVal,'22-DEC-2022',18500,103)
+ INSERT INTO  MEENUS_BILL VALUES(meenus_seq.nexTVal,'07-NOV-2021',19500,105)
+ INSERT INTO  MEENUS_BILL VALUES(meenus_seq.nexTVal,SYSDATE+9,24500,202)
+ SELECT * FROM  MEENUS_BILL
+
+101	25-APR-22	14500	102
+102	22-DEC-22	18500	103
+103	07-NOV-21	19500	105
+104	04-MAY-22	24500	202
+
+
+CREATE TABLE MEENUS_BILL(bill_number number(5) primary key,bill_date date,amount number(10,2),cust_ref number(3))
+ 
+ CREATE SEQUENCE meenus_seq START WITH 101
+ INCREMENT BY 1
+ MAXVALUE 1000
+ 
+ 
+----> INSERT INTO  MEENUS_BILL VALUES(meenus_seq.nexTVal,SYSDATE,14500,102)
+ INSERT INTO  MEENUS_BILL VALUES(meenus_seq.nexTVal,'22-DEC-2022',18500,103)
+ INSERT INTO  MEENUS_BILL VALUES(meenus_seq.nexTVal,'07-NOV-2021',19500,105)
+ INSERT INTO  MEENUS_BILL VALUES(meenus_seq.nexTVal,SYSDATE+9,24500,202)
+ INSERT INTO  MEENUS_BILL VALUES(meenus_seq.nexTVal,to_Date('10-jan-2020')+9,84500,209)
+  INSERT INTO  MEENUS_BILL VALUES(meenus_seq.nexTVal,add_Months(to_Date('10-jan-2020') ,5),74500,218)
+    INSERT INTO  MEENUS_BILL VALUES(meenus_seq.nexTVal,add_Months(('10-jun-2020') ,5),84500,278)
+    UPDATE  MEENUS_BILL SET amount=8500 WHERE cust_ref=218
+    
+  
+ SELECT * FROM  MEENUS_BILL
+
+101	25-APR-22	14500	102
+102	22-DEC-22	18500	103
+103	07-NOV-21	19500	105
+104	04-MAY-22	24500	202
+121	19-JAN-20	84500	209
+122	10-JUN-20	74500	219
+123	10-JUN-20	8500	218
+124	10-JUN-20	8500	218
+125	10-NOV-20	84500	278
+
+                       
+                           self join
+
+SELECT b.bill_number,b.bill_date,b.amount FROM  MEENUS_BILL a, MEENUS_BILL b WHERE a.cust_ref=219 AND a.bill_date = b.bill_date
+
+
+122	10-JUN-20	74500
+123	10-JUN-20	8500
+124	10-JUN-20	8500
+
+SELECT b.bill_number,b.bill_date,b.amount FROM  MEENUS_BILL a, MEENUS_BILL b WHERE a.cust_ref=209 AND a.amount = b.amount
+
+121	19-JAN-20	84500
+125	10-NOV-20	84500
+
+
+
+---------------------------------------------------------------------------------------------------------
+ 
+ CREATE TABLE MEENUS_BILL(bill_number number(5) primary key,bill_date date,amount number(10,2),cust_ref number(3))
+ 
+ CREATE SEQUENCE meenus_seq START WITH 101
+ INCREMENT BY 1
+ MAXVALUE 1000
+ 
+ 
+ INSERT INTO  MEENUS_BILL VALUES(meenus_seq.nexTVal,SYSDATE,14500,102)
+ INSERT INTO  MEENUS_BILL VALUES(meenus_seq.nexTVal,'22-DEC-2022',18500,103)
+ INSERT INTO  MEENUS_BILL VALUES(meenus_seq.nexTVal,'07-NOV-2021',19500,105)
+ INSERT INTO  MEENUS_BILL VALUES(meenus_seq.nexTVal,SYSDATE+9,24500,202)
+ INSERT INTO  MEENUS_BILL VALUES(meenus_seq.nexTVal,to_Date('10-jan-2020')+9,84500,209)
+  INSERT INTO  MEENUS_BILL VALUES(meenus_seq.nexTVal,add_Months(to_Date('10-jan-2020') ,5),74500,218)
+    INSERT INTO  MEENUS_BILL VALUES(meenus_seq.nexTVal,add_Months(('10-jun-2020') ,5),84500,278)
+    UPDATE  MEENUS_BILL SET amount=8500 WHERE cust_ref=218
+    INSERT INTO  MEENUS_BILL VALUES(meenus_seq.nexTVal,'10-jun-2020',190,110)
+    INSERT INTO  MEENUS_BILL VALUES(meenus_seq.nexTVal,'10-jun-2020',1500,115)
+    
+  
+ SELECT * FROM  MEENUS_BILL
+ 
+ 
+ SELECT b.bill_number,b.bill_date,b.amount FROM  MEENUS_BILL a, MEENUS_BILL b WHERE a.cust_ref=115 AND a.bill_date = b.bill_date
+
+122	10-JUN-20	74500
+123	10-JUN-20	8500
+124	10-JUN-20	8500
+141	10-JUN-20	190
+142	10-JUN-20	1500
+
+SELECT b.bill_number,b.bill_date,b.amount FROM  MEENUS_BILL a, MEENUS_BILL b WHERE a.cust_ref=209 AND a.amount = b.amount
+
+
+121	19-JAN-20	84500
+125	10-NOV-20	84500
+
+
+ 
+
+
+
+
+
+
