@@ -1,0 +1,91 @@
+package com.training.jaxrs_client;
+
+import org.glassfish.jersey.client.spi.InvocationBuilderListener.InvocationBuilderContext;
+
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.client.Invocation;
+import jakarta.ws.rs.client.WebTarget;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import oracle.security.o3logon.b;
+
+public class ProductClient {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		Client client= ClientBuilder.newClient();
+		WebTarget target=client.target("http://localhost:8082/produtcs");
+		
+		Invocation.Builder builder=target.request(MediaType.APPLICATION_JSON);
+		
+		Response resp =	builder.get();
+	
+	int ch=3;
+	
+	
+	
+	
+	if(ch==4) {
+		Product[] list=resp.readEntity(Product[].class);
+		for(Product eachProduct:list)
+		{
+			System.out.println(eachProduct);
+		}
+	}
+	
+	
+	if(ch==1) {
+		String  object=resp.readEntity(String.class);
+     System.out.println(object);
+
+		
+		
+	}
+	
+	
+	if(ch==2) {
+    WebTarget findByIdtarget=target.path("/src/11");
+		
+   Invocation.Builder builder2=findByIdtarget.request(MediaType.APPLICATION_JSON) ;
+  
+	
+	Response findByresp =	builder2.get();
+	Product object=findByresp.readEntity(Product.class);
+	System.out.println(object);
+
+
+	}
+	
+	
+	if(ch==3) {
+		Product toAdd=new Product(38, "wofa", 6880);
+		Response response=builder.post(Entity.entity(toAdd, MediaType.APPLICATION_JSON));
+		System.out.println(response.getStatus());
+		
+	System.out.println(response.readEntity(String.class));
+		
+	}
+	}
+	
+	}
+
+//	System.out.println(resp);
+//          String  object=resp.readEntity(String.class);
+//          System.out.println(object);
+	
+		
+	//	Product object2=resp.readEntity(Product.class);
+	//	System.out.println(object2);
+	//	
+//		Product toAdd=new Product(3459, "sofa", 680);
+//		Response response=builder.post(Entity.entity(toAdd, MediaType.APPLICATION_JSON));
+//		System.out.println(response.getStatus());
+//		
+//		System.out.println(response.readEntity(String.class));
+          
+
+
+
